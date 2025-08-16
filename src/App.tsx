@@ -24,6 +24,7 @@ export function App() {
     checkCode: 0
   });
   const [pushedButton, setPushedButton] = React.useState<Button>("Cool");
+  const [serverResponse, setServerResponse] = React.useState<string>("");
 
   return (
     <>
@@ -156,6 +157,22 @@ export function App() {
         </div>
       </div>
       <div>{toBinary(encode(state, pushedButton), true)}</div>
+      <div>
+        <button onClick={() => {
+          fetch(
+            `send/?data=0b${toBinary(encode(state, pushedButton), true)}`
+          ).then(
+            response => response.text()
+          ).then(
+            text => setServerResponse(new Date().toTimeString() + "\n" + text)
+          );
+        }}>送信</button>
+      </div>
+      <div>
+        <pre>
+          {serverResponse}
+        </pre>
+      </div>
     </>
   );
 }
@@ -166,5 +183,5 @@ function toBinary(value: Uint8Array, lsBitFirst: boolean = false): string {
   return Array.from(value)
     .map((byte) => byte.toString(2).padStart(8, "0"))
     .map((byte) => (lsBitFirst ? byte.split("").reverse().join("") : byte))
-    .join(" ");
+    .join("");
 }

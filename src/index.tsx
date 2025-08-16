@@ -3,6 +3,10 @@ import index from "./index.html";
 
 const server = serve({
   routes: {
+    "/send/": (req: Bun.BunRequest) => {
+      const url = new URL(req.url);
+      return fetch(`http://ir-server.local/${url.search}`)
+    },
     // Serve index.html for all unmatched routes.
     "/*": index,
   },
