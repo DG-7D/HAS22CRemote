@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.tsx",
+    "dev": "BUN_CONFIG_DNS_TIME_TO_LIVE_SECONDS=86400 bun --hot src/index.tsx",
     "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
-    "start": "NODE_ENV=production bun src/index.tsx"
+    "start": "BUN_CONFIG_DNS_TIME_TO_LIVE_SECONDS=86400 NODE_ENV=production bun src/index.tsx"
   },
   "dependencies": {
     "@tsconfig/strictest": "^2.0.5",
