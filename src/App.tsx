@@ -2,6 +2,7 @@ import React from "react";
 import { encode, type Button, type CheckCode, type Hour, type Minute, type Mode, type State, type TemperatureAbsolute, type TemperatureRelative, type Volume } from "./irEncoder";
 
 export function App() {
+  const [sending, setSending] = React.useState<boolean>(false);
   const [state, setState] = React.useState<State>({
     running: true,
     mode: "Cool",
@@ -159,14 +160,17 @@ export function App() {
       <div>{toBinary(encode(state, pushedButton), true)}</div>
       <div>
         <button onClick={() => {
+          setSending(true);
           fetch(
             `send/?data=0b${toBinary(encode(state, pushedButton), true)}`
           ).then(
             response => response.text()
           ).then(
             text => setServerResponse(new Date().toTimeString() + "\n" + text)
+          ).finally(
+            () => setSending(false)
           );
-        }}>送信</button>
+        }} disabled={sending}>送信</button>
       </div>
       <div>
         <pre>
